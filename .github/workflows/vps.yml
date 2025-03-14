@@ -1,0 +1,26 @@
+name: Free VPS without Ngrok
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: # برای اجرا دستی
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Setup VPS
+      run: |
+        echo "Setting up VPS..."
+        sudo apt-get update
+        sudo apt-get install -y openssh-server
+        sudo systemctl start sshd
+        echo "SSH server started on port 22!"
+        # نمایش آدرس داخلی (فقط تو محیط Actions قابل استفاده)
+        echo "SSH is running locally on this VM. Use 'runner' as username."
+        # نصب یه وب‌سرور ساده (مثلاً Nginx)
+        sudo apt-get install -y nginx
+        sudo systemctl start nginx
+        echo "Nginx web server started on port 80!"
+        # نگه داشتن سرور فعال
+        while true; do sleep 1000; done
